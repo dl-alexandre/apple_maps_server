@@ -1,0 +1,65 @@
+defmodule AppleMapsServer.MixProject do
+  use Mix.Project
+
+  @version "0.1.0"
+  @source_url "https://github.com/dl-alexandre/apple_maps_server"
+
+  def project do
+    [
+      app: :apple_maps_server,
+      version: @version,
+      elixir: "~> 1.19",
+      elixirc_paths: elixirc_paths(Mix.env()),
+      start_permanent: Mix.env() == :prod,
+      deps: deps(),
+      description: description(),
+      package: package(),
+      docs: docs(),
+      source_url: @source_url
+    ]
+  end
+
+  def application do
+    [
+      extra_applications: [:logger, :crypto, :public_key],
+      mod: {AppleMapsServer.Application, []}
+    ]
+  end
+
+  defp elixirc_paths(:test), do: ["lib", "test/support"]
+  defp elixirc_paths(_), do: ["lib"]
+
+  defp deps do
+    [
+      {:req, "~> 0.5"},
+      {:jose, "~> 1.11"},
+      {:bypass, "~> 2.1", only: :test},
+      {:ex_doc, "~> 0.34", only: :dev, runtime: false}
+    ]
+  end
+
+  defp description do
+    "Elixir client for the Apple Maps Server API (tokens, search, autocomplete, geocode, reverse geocode)."
+  end
+
+  defp package do
+    [
+      licenses: ["MIT"],
+      links: %{"GitHub" => @source_url},
+      files: ~w(lib mix.exs README.md CHANGELOG.md LICENSE .formatter.exs)
+    ]
+  end
+
+  defp docs do
+    [
+      main: "readme",
+      extras: ["README.md", "CHANGELOG.md", "LICENSE"],
+      source_ref: "v#{@version}",
+      groups_for_modules: [
+        Auth: [AppleMapsServer.Token, AppleMapsServer.TokenCache],
+        Types: [AppleMapsServer.Place, AppleMapsServer.Coordinate],
+        Errors: [AppleMapsServer.Error]
+      ]
+    ]
+  end
+end
