@@ -22,3 +22,14 @@ erl_crash.dump
 # Ignore package tarball (built via "mix hex.build").
 apple_maps_server-*.tar
 
+
+# Environment variables and secrets
+.env
+.env.local
+.env.*.local
+
+# macOS files
+.DS_Store
+
+# Apple Auth Keys
+AuthKey_*.p8
