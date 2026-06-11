@@ -1,7 +1,7 @@
 defmodule AppleMapsServer.TokenTest do
   use ExUnit.Case, async: true
 
-  alias AppleMapsServer.{Token, TestKey}
+  alias AppleMapsServer.{TestKey, Token}
 
   setup do
     %{pem: TestKey.pem()}
@@ -38,6 +38,21 @@ defmodule AppleMapsServer.TokenTest do
   test "generate_jwt/1 reports missing key_id", %{pem: pem} do
     assert {:error, {:missing_config, :key_id}} =
              Token.generate_jwt(team_id: "T", private_key: pem)
+  end
+
+  test "generate_jwt/1 returns error tuple for malformed PEM" do
+    assert {:error, {:token_generation_failed, _}} =
+             Token.generate_jwt(team_id: "T", key_id: "K", private_key: "not a pem")
+  end
+
+  test "generate_jwt/1 returns error tuple for missing key file" do
+    assert {:error, {:token_generation_failed, _}} =
+             Token.generate_jwt(
+               team_id: "T",
+               key_id: "K",
+               private_key: nil,
+               private_key_path: "/nonexistent/key.p8"
+             )
   end
 
   test "access_token/1 exchanges JWT for access token", %{pem: pem} do

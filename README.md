@@ -15,7 +15,7 @@ Elixir client for the [Apple Maps Server API](https://developer.apple.com/docume
 ```elixir
 def deps do
   [
-    {:apple_maps_server, "~> 0.1.0"}
+    {:apple_maps_server, "~> 0.3.0"}
   ]
 end
 ```
